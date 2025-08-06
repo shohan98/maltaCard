@@ -1,0 +1,26 @@
+Order Status Update - MaltaCard
+===============================
+
+Dear {{ user.first_name }} {{ user.last_name }},
+
+We wanted to let you know that your order status has been updated.
+
+ORDER DETAILS:
+==============
+Order Number: #{{ order_number }}
+Card: {{ card.name }}
+Order Date: {{ order_date|date:"F j, Y, g:i a" }}
+New Status: {{ status }}
+
+We're working hard to get your order to you as quickly as possible. You can track your order progress through your account dashboard.
+
+If you have any questions about your order, please don't hesitate to contact our support team.
+
+Thank you for choosing MaltaCard!
+
+Best regards,
+The MaltaCard Team
+
+---
+This email was sent to {{ user.email }}
+© 2024 MaltaCard. All rights reserved. 

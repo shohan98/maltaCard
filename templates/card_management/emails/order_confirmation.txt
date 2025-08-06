@@ -1,0 +1,28 @@
+Order Confirmation - MaltaCard
+================================
+
+Dear {{ user.first_name }} {{ user.last_name }},
+
+We're excited to confirm your order has been received and is being processed.
+
+ORDER DETAILS:
+==============
+Order Number: #{{ order_number }}
+Card: {{ card.name }}
+Quantity: {{ quantity }}
+Total Amount: ${{ total_amount }}
+Order Date: {{ order_date|date:"F j, Y, g:i a" }}
+Status: {{ status }}
+
+We'll keep you updated on the progress of your order. You can track your order status through your account dashboard.
+
+If you have any questions about your order, please don't hesitate to contact our support team.
+
+Thank you for choosing MaltaCard!
+
+Best regards,
+The MaltaCard Team
+
+---
+This email was sent to {{ user.email }}
+© 2024 MaltaCard. All rights reserved. 
