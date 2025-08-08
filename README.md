@@ -1,55 +1,22 @@
-# MaltaCard API
+# 🚀 MaltaCard - Card Management System
 
-A comprehensive Django REST API for Malta card management system with token-based authentication and Google OAuth integration.
+A comprehensive Django-based card management system with REST API, email notifications, and Docker support.
 
-## 🚀 Features
+## 🎯 Features
 
-- **Token-based Authentication** - Secure API authentication using Django REST Framework tokens
-- **Google OAuth Integration** - Social login with Google accounts
-- **User Management** - Complete user registration, profile management, and authentication
-- **Card Management** - Order and manage different types of Malta cards
-- **Swagger Documentation** - Interactive API documentation
-- **Admin Interface** - Beautiful admin interface with Jazzmin
-- **Comprehensive Testing** - Seed data and testing utilities
+- **🔐 Email-based Authentication** - No usernames, fully email-based auth
+- **🃏 Card Management** - Virtual and physical card types
+- **📦 Order System** - Complete order lifecycle management
+- **📧 Email Notifications** - Order confirmations and status updates
+- **🔌 REST API** - Full API with Swagger documentation
+- **🐳 Docker Support** - Production-ready Docker setup
+- **📊 Admin Interface** - Django admin with custom styling
+- **🔍 Search & Filtering** - Advanced search and filtering capabilities
+- **📱 Responsive Design** - Mobile-friendly interface
 
-## 📋 Table of Contents
+## 🚀 Quick Start
 
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [API Documentation](#api-documentation)
-- [Authentication](#authentication)
-- [Database Seeding](#database-seeding)
-- [Admin Interface](#admin-interface)
-- [Development](#development)
-
-## 🛠️ Installation
-
-### Prerequisites
-
-- Python 3.8+
-- pip
-- virtualenv (recommended)
-
-### Environment Setup
-
-**Important**: This project uses environment variables for sensitive configuration. Follow these steps:
-
-1. **Generate environment file**
-   ```bash
-   python setup_env.py
-   ```
-
-2. **Configure your environment variables**
-   Edit the generated `.env` file with your actual values:
-   - Email settings for notifications
-   - Google OAuth credentials
-   - Database configuration (for production)
-
-3. **Security Note**: Never commit your `.env` file to version control!
-
-For detailed environment setup instructions, see [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md).
-
-### Setup
+### For New Developers (macOS)
 
 1. **Clone the repository**
    ```bash
@@ -57,9 +24,41 @@ For detailed environment setup instructions, see [ENVIRONMENT_SETUP.md](ENVIRONM
    cd maltaCard
    ```
 
+2. **Run the setup script**
+   ```bash
+   ./setup.sh
+   ```
+
+   This script will automatically:
+   - ✅ Install required tools (Homebrew, Python 3.13, Git, Docker)
+   - ✅ Create virtual environment
+   - ✅ Install Python dependencies
+   - ✅ Set up environment variables
+   - ✅ Run database migrations
+   - ✅ Create superuser (optional)
+   - ✅ Start development server
+
+3. **Access the application**
+   - **Main App**: http://localhost:8000/
+   - **Admin Panel**: http://localhost:8000/admin/
+   - **API Docs**: http://localhost:8000/swagger/
+   - **API Endpoints**: http://localhost:8000/api/
+
+### Manual Setup (Other Platforms)
+
+1. **Install Python 3.13**
+   ```bash
+   # macOS
+   brew install python@3.13
+   
+   # Ubuntu/Debian
+   sudo apt update
+   sudo apt install python3.13 python3.13-venv
+   ```
+
 2. **Create virtual environment**
    ```bash
-   python -m venv .venv
+   python3.13 -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
@@ -68,357 +67,315 @@ For detailed environment setup instructions, see [ENVIRONMENT_SETUP.md](ENVIRONM
    pip install -r requirements.txt
    ```
 
-4. **Run migrations**
+4. **Set up environment**
    ```bash
-   python manage.py makemigrations
+   cp env.example .env
+   # Edit .env with your settings
+   ```
+
+5. **Run migrations**
+   ```bash
    python manage.py migrate
    ```
 
-5. **Create superuser (optional)**
+6. **Create superuser**
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Seed database with dummy data**
-   ```bash
-   python manage.py seed_data
-   ```
-
-7. **Run the development server**
+7. **Start server**
    ```bash
    python manage.py runserver
    ```
 
-## 🚀 Quick Start
+## 🐳 Docker Setup
 
-After installation, you can access:
-
-- **API Documentation**: http://localhost:8000/swagger/
-- **Admin Interface**: http://localhost:8000/admin/
-- **API Base URL**: http://localhost:8000/api/
-
-### Default Credentials
-
-- **Admin**: `admin` / `admin123`
-- **Test User**: `john.doe` / `password123`
-
-## 📚 API Documentation
-
-### Base URL
-```
-http://localhost:8000/api/
-```
-
-### Authentication Endpoints
-
-#### 1. Login
-```http
-POST /api/auth/auth/login/
-Content-Type: application/json
-
-{
-    "username": "john.doe",
-    "password": "password123"
-}
-```
-
-**Response:**
-```json
-{
-    "success": true,
-    "message": "Login successful",
-    "data": {
-        "token": "your-auth-token-here",
-        "user_id": 1,
-        "username": "john.doe",
-        "email": "john.doe@example.com",
-        "first_name": "John",
-        "last_name": "Doe"
-    }
-}
-```
-
-#### 2. Logout
-```http
-POST /api/auth/auth/logout/
-Authorization: Token your-auth-token-here
-```
-
-#### 3. Google OAuth
-
-**Get OAuth URL:**
-```http
-GET /api/auth/auth/google_login_url/
-```
-
-**Handle OAuth Callback:**
-```http
-POST /api/auth/auth/google_callback/
-Content-Type: application/json
-
-{
-    "access_token": "google-oauth-access-token"
-}
-```
-
-### User Management Endpoints
-
-#### 1. Register User
-```http
-POST /api/auth/users/register/
-Content-Type: application/json
-
-{
-    "username": "newuser",
-    "email": "newuser@example.com",
-    "password": "password123",
-    "password_confirm": "password123",
-    "first_name": "New",
-    "last_name": "User"
-}
-```
-
-#### 2. Get Current User
-```http
-GET /api/auth/users/me/
-Authorization: Token your-auth-token-here
-```
-
-#### 3. Update User Profile
-```http
-PATCH /api/auth/profiles/my_profile/
-Authorization: Token your-auth-token-here
-Content-Type: application/json
-
-{
-    "phone_number": "+356 1234 5678",
-    "address": "123 Main Street",
-    "city": "Valletta",
-    "state": "Valletta",
-    "postal_code": "VLT 1234",
-    "country": "Malta"
-}
-```
-
-### Card Management Endpoints
-
-#### 1. List Card Types
-```http
-GET /api/cards/card-types/
-```
-
-#### 2. Create Card Order
-```http
-POST /api/cards/orders/
-Authorization: Token your-auth-token-here
-Content-Type: application/json
-
-{
-    "card_type": 1,
-    "quantity": 2,
-    "delivery_address": "123 Main Street",
-    "delivery_city": "Valletta",
-    "delivery_postal_code": "VLT 1234",
-    "payment_method": "credit_card",
-    "special_instructions": "Handle with care"
-}
-```
-
-#### 3. Get User Orders
-```http
-GET /api/cards/orders/
-Authorization: Token your-auth-token-here
-```
-
-## 🔐 Authentication
-
-### Token Authentication
-
-All protected endpoints require a valid authentication token in the header:
-
-```http
-Authorization: Token your-auth-token-here
-```
-
-### Getting a Token
-
-1. **Login with username/password**
-2. **Use the returned token in subsequent requests**
-
-### Google OAuth Flow
-
-1. **Get OAuth URL** from `/api/auth/auth/google_login_url/`
-2. **Redirect user** to the returned URL
-3. **Handle callback** with the access token
-4. **Receive authentication token** for API access
-
-## 🌱 Database Seeding
-
-The application includes comprehensive seed data for development and testing:
-
+### Development
 ```bash
-# Seed with default data (10 users, 5 card types, 20 orders)
-python manage.py seed_data
+# Build and start services
+docker-compose build
+docker-compose up -d
 
-# Customize the amount of data
-python manage.py seed_data --users 20 --cards 8 --orders 50
+# Run migrations
+docker-compose exec web python manage.py migrate
+
+# Create superuser
+docker-compose exec web python manage.py createsuperuser
 ```
 
-### Seed Data Includes
+### Production
+```bash
+# Start with nginx
+docker-compose --profile production up -d
+```
 
-- **5 Card Types**: Standard, Premium, Student, Senior, Business
-- **10+ Users**: With complete profiles and authentication tokens
-- **20+ Orders**: Various statuses and payment methods
-- **Admin User**: Ready for admin interface access
+## 📡 API Documentation
 
-## 🎨 Admin Interface
+### Quick API Test
+```bash
+# 1. Register
+curl -X POST http://localhost:8000/api/auth/register/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "testpass123",
+    "password_confirm": "testpass123",
+    "first_name": "Test",
+    "last_name": "User"
+  }'
 
-Access the beautiful admin interface at `http://localhost:8000/admin/`
+# 2. Login
+curl -X POST http://localhost:8000/api/auth/login/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "testpass123"
+  }'
 
-### Features
-- **Modern UI** with Jazzmin theme
-- **User Management** - View and manage all users
-- **Card Management** - Manage card types and orders
-- **Order Tracking** - Monitor order status and progress
-- **Profile Management** - View and edit user profiles
+# 3. Test API
+curl -X GET http://localhost:8000/api/cards/card-types/ \
+  -H "Authorization: Token your-token"
+```
 
-## 🛠️ Development
+### API Endpoints
 
-### Project Structure
+#### Authentication
+- `POST /api/auth/register/` - Register new user
+- `POST /api/auth/login/` - Login and get token
+- `POST /api/auth/logout/` - Logout
+- `GET /api/auth/me/` - Get current user
+
+#### Card Types
+- `GET /api/cards/card-types/` - List all card types
+- `POST /api/cards/card-types/` - Create card type
+- `GET /api/cards/card-types/popular/` - Get popular cards
+- `GET /api/cards/card-types/price_range/` - Filter by price
+
+#### Cards
+- `GET /api/cards/cards/` - List all cards
+- `GET /api/cards/cards/virtual_cards/` - Virtual cards only
+- `GET /api/cards/cards/physical_cards/` - Physical cards only
+
+#### Orders
+- `POST /api/cards/orders/` - Create order
+- `GET /api/cards/orders/my_orders/` - User's orders
+- `POST /api/cards/orders/{id}/cancel_order/` - Cancel order
+
+## 📁 Project Structure
 
 ```
 maltaCard/
-├── authentication/          # User authentication and profiles
-│   ├── api_views.py        # API views for authentication
-│   ├── serializers.py      # Data serializers
-│   ├── models.py           # User profile models
-│   └── management/         # Management commands
-├── card_management/        # Card and order management
-│   ├── api_views.py        # API views for cards
-│   ├── models.py           # Card and order models
-│   └── serializers.py      # Card serializers
-├── core/                   # Core utilities and base models
-├── maltaCard/              # Main project settings
+├── authentication/          # User authentication
+│   ├── models.py           # Custom user model
+│   ├── serializers.py      # API serializers
+│   ├── api_views.py        # API views
+│   └── backends.py         # Email authentication
+├── card_management/         # Card and order management
+│   ├── models.py           # Card, CardType, CardOrder
+│   ├── serializers.py      # Order serializers
+│   ├── api_views.py        # Card API views
+│   └── signals.py          # Email notifications
+├── core/                   # Core utilities
+│   ├── models.py           # Base models
+│   ├── viewsets.py         # Base viewset
+│   ├── utils.py            # Utilities
+│   └── middleware.py       # CSRF middleware
+├── maltaCard/              # Django settings
+│   ├── settings.py         # Main settings
+│   ├── urls.py             # URL configuration
+│   └── production.py       # Production settings
+├── templates/              # Email templates
+├── static/                 # Static files
+├── Dockerfile              # Docker configuration
+├── docker-compose.yml      # Docker services
+├── setup.sh               # macOS setup script
 └── requirements.txt        # Python dependencies
-```
-
-### Available Management Commands
-
-```bash
-# Create authentication tokens for existing users
-python manage.py create_tokens
-
-# Seed database with dummy data
-python manage.py seed_data
-
-# Create superuser
-python manage.py createsuperuser
-```
-
-### Environment Variables
-
-For production, set these environment variables:
-
-```bash
-# Django settings
-SECRET_KEY=your-secret-key
-DEBUG=False
-ALLOWED_HOSTS=your-domain.com
-
-# Google OAuth
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=your-google-oauth2-key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=your-google-oauth2-secret
-```
-
-## 📊 API Response Format
-
-All API responses follow a standardized format:
-
-### Success Response
-```json
-{
-    "success": true,
-    "message": "Operation successful",
-    "data": {
-        // Response data here
-    }
-}
-```
-
-### Error Response
-```json
-{
-    "success": false,
-    "message": "Error description",
-    "errors": {
-        // Validation errors if any
-    }
-}
 ```
 
 ## 🔧 Configuration
 
-### Google OAuth Setup
+### Environment Variables
 
-1. **Create Google OAuth App** in Google Console
-2. **Set redirect URI** to `http://localhost:8000/social-auth/complete/google-oauth2/`
-3. **Update settings.py** with your OAuth credentials
+Create a `.env` file in the project root:
 
-### Database Configuration
+```bash
+# Django Settings
+DEBUG=True
+SECRET_KEY=your-secret-key
+ALLOWED_HOSTS=localhost,127.0.0.1
 
-The default configuration uses SQLite. For production, update `settings.py`:
+# Database Settings
+DATABASE_URL=sqlite:///db.sqlite3
 
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'maltacard_db',
-        'USER': 'your_db_user',
-        'PASSWORD': 'your_db_password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+# Email Settings
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+DEFAULT_FROM_EMAIL=your-email@gmail.com
+
+# Google OAuth Settings
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=your-google-oauth2-key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=your-google-oauth2-secret
+
+# Security Settings
+CSRF_TRUSTED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 ```
+
+### Email Configuration
+
+For Gmail:
+1. Enable 2-Step Verification
+2. Generate App Password
+3. Update `.env` with your credentials
 
 ## 🧪 Testing
 
-### API Testing
-
-Use the interactive Swagger documentation at `http://localhost:8000/swagger/` to test all endpoints.
-
-### Manual Testing
-
+### Run Tests
 ```bash
-# Test login
-curl -X POST http://localhost:8000/api/auth/auth/login/ \
-  -H "Content-Type: application/json" \
-  -d '{"username": "john.doe", "password": "password123"}'
-
-# Test authenticated endpoint
-curl -X GET http://localhost:8000/api/auth/users/me/ \
-  -H "Authorization: Token your-token-here"
+python manage.py test
 ```
 
-## 📝 License
+### API Testing
+```bash
+# Test email functionality
+python manage.py test_email --email your-email@example.com
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+# Test card orders
+python manage.py recalculate_card_orders
+```
+
+### Manual Testing
+```bash
+# Start server
+python manage.py runserver
+
+# Access URLs
+# http://localhost:8000/admin/     # Admin panel
+# http://localhost:8000/swagger/   # API docs
+# http://localhost:8000/api/       # API endpoints
+```
+
+## 📊 Database
+
+### Models
+- **CustomUser** - Email-based user authentication
+- **UserProfile** - Extended user information
+- **CardType** - Card categories and pricing
+- **Card** - Individual card instances
+- **CardOrder** - Order management
+
+### Migrations
+```bash
+# Create migrations
+python manage.py makemigrations
+
+# Apply migrations
+python manage.py migrate
+
+# Reset database (development)
+rm db.sqlite3
+python manage.py migrate
+```
+
+## 🚀 Deployment
+
+### Production Checklist
+- [ ] Set `DEBUG=False`
+- [ ] Configure production database
+- [ ] Set up SSL certificates
+- [ ] Configure email settings
+- [ ] Set secure `SECRET_KEY`
+- [ ] Configure `ALLOWED_HOSTS`
+- [ ] Set up monitoring
+
+### Docker Production
+```bash
+# Build production image
+docker-compose --profile production build
+
+# Start production services
+docker-compose --profile production up -d
+
+# Check logs
+docker-compose logs -f
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **Virtual Environment**
+   ```bash
+   # Recreate virtual environment
+   rm -rf .venv
+   python3.13 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+2. **Database Issues**
+   ```bash
+   # Reset database
+   rm db.sqlite3
+   python manage.py migrate
+   python manage.py createsuperuser
+   ```
+
+3. **Email Issues**
+   ```bash
+   # Test email configuration
+   python manage.py test_email --email your-email@example.com
+   ```
+
+4. **Docker Issues**
+   ```bash
+   # Rebuild containers
+   docker-compose down
+   docker-compose build --no-cache
+   docker-compose up -d
+   ```
+
+### Health Checks
+```bash
+# Check Django setup
+python manage.py check
+
+# Check API health
+curl http://localhost:8000/health/
+
+# Check Docker services
+docker-compose ps
+```
+
+## 📚 Documentation
+
+- [API Integration Guide](API_INTEGRATION_GUIDE.md) - Complete API documentation
+- [Docker Deployment Guide](DOCKER_DEPLOYMENT.md) - Docker setup and deployment
+- [Swagger Documentation](http://localhost:8000/swagger/) - Interactive API docs
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Add tests
 5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
 
 ## 📞 Support
 
-For support and questions:
-- Email: contact@maltacard.com
-- Documentation: http://localhost:8000/swagger/
-- Admin Interface: http://localhost:8000/admin/
+- **Documentation**: http://localhost:8000/swagger/
+- **Admin Panel**: http://localhost:8000/admin/
+- **Health Check**: http://localhost:8000/health/
 
 ---
 
-**MaltaCard API** - Secure, scalable, and user-friendly card management system for Malta.
+**🎉 Welcome to MaltaCard!** Start with the setup script and explore the API documentation.
+
+**Happy Coding! 🚀**
