@@ -51,11 +51,13 @@ INSTALLED_APPS = [
     'authentication',
     'card_management',
     'social_django',  # For Google OAuth
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'core.middleware.CSRFExemptMiddleware',  # Exempt API endpoints from CSRF
@@ -93,6 +95,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'maltaCard.wsgi.application'
+
+# React development server
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]
 
 
 # Database
