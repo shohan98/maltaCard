@@ -94,6 +94,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'maltaCard.wsgi.application'
 
 # React development server
