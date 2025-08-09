@@ -185,7 +185,7 @@ class AuthenticationViewSet(viewsets.ViewSet):
         """Get Google OAuth authorization URL"""
         try:
             strategy = load_strategy(request)
-            backend = load_backend(strategy=strategy, name='google-oauth2', redirect_uri=None)
+            backend = load_backend(strategy=strategy, name='google-oauth2', redirect_uri="None")
             auth_url = backend.auth_url()
             return APIResponse.success(
                 data={'auth_url': auth_url},

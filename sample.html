@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
+    <button id="googleBtn">Sign in with Google</button>
+
+    <script>
+      const CLIENT_ID = "270836792705-jhf5t8893vkovjhar8d3vcfpgnpj60ls.apps.googleusercontent.com";
+
+      let tokenClient;
+      window.onload = () => {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: "openid email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+          prompt: "consent",
+          callback: async (resp) => {
+            if (resp.error) { console.error(resp); return; }
+            // Send to your backend
+            const r = await fetch("http://localhost:8000/api/auth/auth/google_callback/", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ access_token: resp.access_token })
+            });
+            console.log(await r.json());
+          }
+        });
+      };
+
+      document.getElementById("googleBtn").onclick = () => {
+        tokenClient.requestAccessToken();
+      };
+    </script>
+  </body>
+</html>
